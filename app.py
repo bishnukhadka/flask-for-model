@@ -41,7 +41,7 @@ class StudentModel(Resource):
         return jsonify(response_data)
 
 api.add_resource(StudentModel, '/predict')
-with open("assets\model.pkl", "rb") as f:
+with open(r"assets\model.pkl", "rb") as f:
         model = pickle.load(f)
 
 # The code below is for running locally only, do not push this to productoin. 
