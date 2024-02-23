@@ -3,4 +3,3 @@ numpy
 tensorflow
 flask_restful
 gunicorn
-python==3.10
