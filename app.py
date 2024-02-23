@@ -6,6 +6,7 @@ import json
 from utility.utility1 import * 
 app = Flask(__name__)
 api = Api(app)
+import os
 
 # Create parser for the payload data
 parser = reqparse.RequestParser()
@@ -41,9 +42,13 @@ class StudentModel(Resource):
         return jsonify(response_data)
 
 api.add_resource(StudentModel, '/predict')
-with open("assets\\model.pkl", "rb") as f:
+model_path = os.path.join("assets", "model.pkl")
+with open(model_path, "rb") as f:
+    try:
         model = pickle.load(f)
+    except UnicodeDecodeError as e:
+        print(f"Error decoding file: {e}")
 
 # The code below is for running locally only, do not push this to productoin. 
-# if __name__ == '__main__':
-#     app.run(debug=False)
+if __name__ == '__main__':
+    app.run(debug=False)
