@@ -50,5 +50,5 @@ with open(model_path, "rb") as f:
         print(f"Error decoding file: {e}")
 
 # The code below is for running locally only, do not push this to productoin. 
-if __name__ == '__main__':
-    app.run(debug=False)
+# if __name__ == '__main__':
+#     app.run(debug=False)
