@@ -2,4 +2,3 @@ flask
 numpy
 tensorflow==2.15.0
 flask_restful
-gunicorn
