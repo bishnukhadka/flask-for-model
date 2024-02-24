@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-import pickle
 import numpy as np
 from flask_restful import Api, Resource, reqparse
 import json
@@ -7,6 +6,7 @@ from utility.utility1 import *
 app = Flask(__name__)
 api = Api(app)
 import os
+import tensorflow as tf
 
 # Create parser for the payload data
 parser = reqparse.RequestParser()
@@ -42,12 +42,14 @@ class StudentModel(Resource):
         return jsonify(response_data)
 
 api.add_resource(StudentModel, '/predict')
-model_path = os.path.join("assets", "model.pkl")
-with open(model_path, "rb") as f:
-    try:
-        model = pickle.load(f)
-    except UnicodeDecodeError as e:
-        print(f"Error decoding file: {e}")
+model_path = os.path.join("assets", "model.keras")
+
+model = tf.keras.models.load_model(model_path)
+# with open(model_path, "rb") as f:
+#     try:
+#         model = pickle.load(f)
+#     except UnicodeDecodeError as e:
+#         print(f"Error decoding file: {e}")
 
 # The code below is for running locally only, do not push this to productoin. 
 # if __name__ == '__main__':
