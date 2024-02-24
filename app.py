@@ -6,7 +6,7 @@ from utility.utility1 import *
 app = Flask(__name__)
 api = Api(app)
 import os
-import tensorflow as tf
+import pickle
 
 # Create parser for the payload data
 parser = reqparse.RequestParser()
@@ -33,24 +33,28 @@ class StudentModel(Resource):
         print(f"prediction: {prediction}")
 
         #Process the prediction
-        max_indices_per_row = np.argmax(prediction, axis=1).tolist()
-        print(f"max: {max_indices_per_row}")
+        # max_indices_per_row = np.argmax(prediction, axis=1).tolist()
+        # print(f"max: {max_indices_per_row}")
         response_data = {
             "status": "200 OK",
-            "prediction": max_indices_per_row
+            "prediction": prediction.tolist()
         }
         return jsonify(response_data)
 
 api.add_resource(StudentModel, '/predict')
-model_path = os.path.join("assets", "model.keras")
+model_path = os.path.join("assets", "model.pkl")
 
-model = tf.keras.models.load_model(model_path)
-# with open(model_path, "rb") as f:
-#     try:
-#         model = pickle.load(f)
-#     except UnicodeDecodeError as e:
-#         print(f"Error decoding file: {e}")
+# try:
+#     model = tf.keras.models.load_model(model_path)
+# except Exception as e:
+#     print(f"Error :{e}")
+
+with open(model_path, "rb") as f:
+    try:
+        model = pickle.load(f)
+    except Exception as e:
+        print(f"Error: {e}")
 
 # The code below is for running locally only, do not push this to productoin. 
-# if __name__ == '__main__':
-#     app.run(debug=False)
+if __name__ == '__main__':
+    app.run(debug=False)
